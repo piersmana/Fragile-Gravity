@@ -1,30 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Atom : MonoBehaviour {
+public class Atom : Body {
 
-	private bool attachedToPlanet = false;
+	private GravityCenter parentBody;
 
-	void Awake () {
+	public override void Awake () {
+		base.Awake();
 
-		attachedToPlanet = false;
-	
+		r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
 	}
 	
-	public void AttachToPlanet(Transform planet) {
+	public void AttachToBody(GravityCenter g) {
 
-		print ("attached");
-		this.rigidbody2D.isKinematic = true;
-		this.transform.parent = planet;
-		this.gameObject.layer = LayerMask.NameToLayer("PlayerPlanet");
-		attachedToPlanet = true;
+		r.isKinematic = true;
+		t.parent = g.transform;
+		gameObject.layer = LayerMask.NameToLayer("OwnedBodies");
+		parentBody = g;
+		parentBody.AddMass(r.mass);
+
+		//ADD: Effects
+		//ADD: Start hardening subroutine
 
 	}
 	
-	void OnCollisionEnter2D (Collision2D coll) {
-		print (coll.gameObject.name + " " + coll.relativeVelocity.magnitude);
-		if(coll.relativeVelocity.magnitude < 20) {
-			AttachToPlanet(coll.transform);
+	public override void OnCollisionEnter2D (Collision2D coll) {
+		base.OnCollisionEnter2D(coll);
+	}
+
+	void OnCollisionStay2D (Collision2D coll) {
+		GravityCenter g = coll.transform.root.GetComponent<GravityCenter>();
+		if (g != null) {
+			AttachToBody (g);
+		}
+	}
+
+	void OnDestroy() { //ADD: better destruction control
+		if (parentBody) {
+			parentBody.AddMass(-r.mass);
 		}
 	}
 }

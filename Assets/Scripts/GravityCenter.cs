@@ -1,42 +1,51 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GravityCenter : MonoBehaviour {
+public class GravityCenter : Body {
 
-	public float gravityForce = 5;
-	public int maxVoxels = 1000;
-	public float gravityDetectionRange = 100f;
+	public static int maxAtoms = 1000;
 
-	private Collider2D[] affectedCubes;
-	private int gravityLayermask;
+	public float gravityForce;
+	public float gravityDetectionRange = 1000f;
 
-	void Awake () {
-	
-		affectedCubes = new Collider2D[maxVoxels];
-		gravityLayermask = 1 << LayerMask.NameToLayer("FreeVoxels");
+	protected Collider2D[] affectedBodies;
+	protected int gravityLayermask;
+
+	public override void Awake () {
+		base.Awake();
+		gravityForce = r.mass;
+		affectedBodies = new Collider2D[maxAtoms];
+		gravityLayermask = 1 << LayerMask.NameToLayer("FreeBodies");
 
 	}
 
 	void FixedUpdate () {
 
-		int countAffectedCubes = Physics2D.OverlapCircleNonAlloc(new Vector2(transform.position.x,transform.position.y),gravityDetectionRange,affectedCubes,gravityLayermask);
-		Transform cube;
+		int countAffectedBodies = Physics2D.OverlapCircleNonAlloc(new Vector2(t.position.x,t.position.y),gravityDetectionRange,affectedBodies,gravityLayermask);
+		Transform bT;
+		Rigidbody2D bR;
 
-		if(countAffectedCubes > 0) {
-			for (int c = 0; c < countAffectedCubes; c++) {
-				cube = affectedCubes[c].transform;
-				if(cube.name != "GravityCenter") {
-					Vector2 delta = new Vector2(transform.position.x - cube.position.x, transform.position.y - cube.position.y);
-					cube.rigidbody2D.AddForce(delta.normalized * gravityForce * cube.rigidbody2D.mass / delta.sqrMagnitude);
-				}
+		if(countAffectedBodies > 0) {
+			for (int c = 0; c < countAffectedBodies; c++) {
+				bT = affectedBodies[c].transform;
+				bR = affectedBodies[c].rigidbody2D;
+
+				Vector2 delta = new Vector2(t.position.x - bT.position.x, t.position.y - bT.position.y);
+				bR.AddForce(delta.normalized * gravityForce * bR.mass / delta.sqrMagnitude);
 			}
 		}
 
 	}
 
-//	void OnCollisionEnter2D (Collision2D coll) {
-//		if(coll.relativeVelocity.magnitude < 5) {
-//			coll.gameObject.GetComponent<VoxelMass>().AttachToPlanet(this.transform);
-//		}
-//	}
+	public override void OnCollisionEnter2D (Collision2D coll) {
+		base.OnCollisionEnter2D(coll);
+	}
+
+	public virtual void AddMass(float m) {
+		r.mass += m;
+
+		//ADD: condition for growth
+	}	
+
+	//ADD: destruction condition and effects
 }
