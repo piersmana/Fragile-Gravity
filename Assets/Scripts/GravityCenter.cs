@@ -43,6 +43,7 @@ public class GravityCenter : Body {
 
 	public virtual void AddMass(float m) {
 		r.mass += m;
+		effectiveMass = r.mass;
 
 		//ADD: condition for growth
 	}	

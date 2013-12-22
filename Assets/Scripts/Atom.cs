@@ -18,6 +18,7 @@ public class Atom : Body {
 		gameObject.layer = LayerMask.NameToLayer("OwnedBodies");
 		parentBody = g;
 		parentBody.AddMass(r.mass);
+		effectiveMass = parentBody.effectiveMass;
 
 		//ADD: Effects
 		//ADD: Start hardening subroutine
@@ -35,9 +36,11 @@ public class Atom : Body {
 		}
 	}
 
-	void OnDestroy() { //ADD: better destruction control
+	public override void BlowUp() {
+		Instantiate(explosionPrefab,t.position,t.localRotation);
 		if (parentBody) {
 			parentBody.AddMass(-r.mass);
 		}
+		base.BlowUp();
 	}
 }
