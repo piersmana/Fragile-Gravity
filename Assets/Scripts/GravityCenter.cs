@@ -6,7 +6,9 @@ public class GravityCenter : Body {
 	public static int maxAtoms = 1000;
 
 	public float gravityForce;
-	public float gravityDetectionRange = 1000f;
+	public float gravityDetectionRangeMultiplier = 15f;
+
+	public float gravityDetectionRange;
 
 	protected Collider2D[] affectedBodies;
 	protected int gravityLayermask;
@@ -14,6 +16,7 @@ public class GravityCenter : Body {
 	public override void Awake () {
 		base.Awake();
 		gravityForce = r.mass;
+		gravityDetectionRange = t.localScale.magnitude * gravityDetectionRangeMultiplier;
 		affectedBodies = new Collider2D[maxAtoms];
 		gravityLayermask = 1 << LayerMask.NameToLayer("FreeBodies");
 
@@ -49,4 +52,9 @@ public class GravityCenter : Body {
 	}	
 
 	//ADD: destruction condition and effects
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position,gravityDetectionRange);
+	}
 }

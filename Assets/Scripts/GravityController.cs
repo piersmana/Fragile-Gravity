@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class GravityController : GravityCenter {
-
-	public float massChangeRate = 10f;
+	
 	public float massMaxMultiplier = 10f;
 
 	private float massMax;
@@ -16,9 +15,14 @@ public class GravityController : GravityCenter {
 	}
 
 	void Update () {
-		float g = Input.GetAxis("GravityShift");
-		if(g != 0)
-			gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
+		//float g = Input.GetAxis("GravityShift");
+		//if(g != 0)
+			
+	}
+
+	public void AlterForce (float g) {
+		//gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
+		gravityForce = Mathf.Clamp(g,massMin,massMax);
 	}
 
 	public override void AddMass (float m)
