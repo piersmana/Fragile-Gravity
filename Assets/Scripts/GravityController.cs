@@ -8,10 +8,17 @@ public class GravityController : GravityCenter {
 	private float massMax;
 	private float massMin;
 
+	private GravityController_ParticleControl particles;
+
 	public override void Awake () {
 		base.Awake ();
 		massMax = r.mass *  massMaxMultiplier;
 		massMin = r.mass * -massMaxMultiplier;
+		particles = GetComponent<GravityController_ParticleControl>();
+	}
+
+	void Start() {
+		particles.UpdateParticleSystemRate(gravityForce);
 	}
 
 	void Update () {
@@ -23,6 +30,7 @@ public class GravityController : GravityCenter {
 	public void AlterForce (float g) {
 		//gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
 		gravityForce = Mathf.Clamp(g,massMin,massMax);
+		particles.UpdateParticleSystemRate(gravityForce);
 	}
 
 	public override void AddMass (float m)
