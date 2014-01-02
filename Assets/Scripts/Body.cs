@@ -9,11 +9,13 @@ public abstract class Body : MonoBehaviour {
 	
 	protected Rigidbody2D r;
 	protected Transform t;
+	protected Bounds bounds;
 
 	public virtual void Awake() {
 		r = rigidbody2D;
 		t = transform;
 		effectiveMass = r.mass;
+		bounds = new Bounds(t.position,renderer.bounds.size);
 	}
 
 	public virtual void OnCollisionEnter2D (Collision2D coll) {
@@ -27,5 +29,14 @@ public abstract class Body : MonoBehaviour {
 
 	public virtual void BlowUp() {
 		Destroy (this.gameObject);
+	}
+
+	public virtual Bounds GetBounds() {
+		return bounds;
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireCube(bounds.center,bounds.size);
 	}
 }

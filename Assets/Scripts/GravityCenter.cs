@@ -11,6 +11,7 @@ public class GravityCenter : Body {
 	public float gravityDetectionRange;
 
 	protected Collider2D[] affectedBodies;
+	protected int countAffectedBodies = 0;
 	protected int gravityLayermask;
 
 	public override void Awake () {
@@ -20,11 +21,15 @@ public class GravityCenter : Body {
 		affectedBodies = new Collider2D[maxAtoms];
 		gravityLayermask = 1 << LayerMask.NameToLayer("FreeBodies");
 
+		Body[] childBodies = GetComponentsInChildren<Body>();
+		foreach (Body child in childBodies) {
+			bounds.Encapsulate(child.GetBounds());
+		}
 	}
 
-	void FixedUpdate () {
+	public virtual void FixedUpdate () {
 
-		int countAffectedBodies = Physics2D.OverlapCircleNonAlloc(new Vector2(t.position.x,t.position.y),gravityDetectionRange,affectedBodies,gravityLayermask);
+		countAffectedBodies = Physics2D.OverlapCircleNonAlloc(new Vector2(t.position.x,t.position.y),gravityDetectionRange,affectedBodies,gravityLayermask);
 		Transform bT;
 		Rigidbody2D bR;
 
@@ -43,10 +48,18 @@ public class GravityCenter : Body {
 	public override void OnCollisionEnter2D (Collision2D coll) {
 		base.OnCollisionEnter2D(coll);
 	}
-
+	
 	public virtual void AddMass(float m) {
 		r.mass += m;
 		effectiveMass = r.mass;
+		
+		//ADD: condition for growth
+	}	
+
+	public virtual void AddMass(float m, Bounds b) {
+		r.mass += m;
+		effectiveMass = r.mass;
+		bounds.Encapsulate(b);
 
 		//ADD: condition for growth
 	}	
@@ -56,5 +69,7 @@ public class GravityCenter : Body {
 	void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position,gravityDetectionRange);
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireCube(bounds.center,bounds.size);
 	}
 }

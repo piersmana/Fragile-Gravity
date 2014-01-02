@@ -8,7 +8,7 @@ public class Atom : Body {
 	public override void Awake () {
 		base.Awake();
 
-		r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
+		//r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
 	}
 	
 	public void AttachToBody(GravityCenter g) {
@@ -17,7 +17,7 @@ public class Atom : Body {
 		t.parent = g.transform;
 		gameObject.layer = LayerMask.NameToLayer("OwnedBodies");
 		parentBody = g;
-		parentBody.AddMass(r.mass);
+		parentBody.AddMass(r.mass,bounds);
 		effectiveMass = parentBody.effectiveMass;
 
 		//ADD: Effects
@@ -42,5 +42,11 @@ public class Atom : Body {
 			parentBody.AddMass(-r.mass);
 		}
 		base.BlowUp();
+	}
+
+	public override Bounds GetBounds ()
+	{
+		bounds = new Bounds(t.position,renderer.bounds.size);
+		return base.GetBounds ();
 	}
 }

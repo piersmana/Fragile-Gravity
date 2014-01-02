@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(GravityController))]
 public class GravityController_ParticleControl : MonoBehaviour {
 
 	public float growthSpeed  = 5f;
