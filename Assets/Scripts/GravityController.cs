@@ -22,7 +22,7 @@ public class GravityController : GravityCenter {
 	}
 
 	void Start() {
-		particles.UpdateParticleSystemRate(gravityForce);
+		particles.UpdateParticleSystemRate(gravityForce/massMax);
 	}
 
 	public override void FixedUpdate() {
@@ -46,7 +46,7 @@ public class GravityController : GravityCenter {
 	public void AlterForce (float g) {
 		//gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
 		gravityForce = Mathf.Clamp(g,massMin,massMax);
-		particles.UpdateParticleSystemRate(gravityForce);
+		particles.UpdateParticleSystemRate(gravityForce/massMax);
 	}
 	
 	public override void AddMass (float m)
