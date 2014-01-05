@@ -11,6 +11,12 @@ public class AtomExplosionControl : MonoBehaviour {
 
 	void Update() {
 		if (particles.isPlaying == false)
-			Destroy(this.gameObject);
+			gameObject.SetActive(false);
+	}
+
+	public void PlayExplosion(Vector3 pos) {
+		gameObject.SetActive(true);
+		transform.position = pos;
+		particles.Play();
 	}
 }

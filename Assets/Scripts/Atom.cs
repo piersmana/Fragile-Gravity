@@ -36,12 +36,23 @@ public class Atom : Body {
 		}
 	}
 
-	public override void BlowUp() {
-		Instantiate(explosionPrefab,t.position,t.localRotation);
+	public void EnableBody(Vector3 pos, Vector2 force) {
+		base.EnableBody();
+		t.position = pos;
+		r.AddForce(force);
+	}
+
+	public override void RemoveBody() {
+		//Instantiate(explosionPrefab,t.position,t.localRotation);
+		BodyManager.Instance.SpawnAtomExplosion(t.position);
 		if (parentBody) {
+			r.isKinematic = false;
 			parentBody.AddMass(-r.mass);
+			t.parent = null;
+			parentBody = null;
+			effectiveMass = r.mass;
 		}
-		base.BlowUp();
+		base.RemoveBody();
 	}
 
 	public override Bounds GetBounds ()

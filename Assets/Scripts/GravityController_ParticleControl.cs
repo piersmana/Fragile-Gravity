@@ -30,7 +30,6 @@ public class GravityController_ParticleControl : MonoBehaviour {
 //	}
 
 	public void UpdateParticleSystemRate(float gravity) {
-		float gravityScale = (gravity + 1) / 2;
 
 		gravityParticleSystem.startSpeed = transform.localScale.x * gravity; 
 
