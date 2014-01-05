@@ -9,13 +9,15 @@ public abstract class Body : MonoBehaviour {
 	
 	protected Rigidbody2D r;
 	protected Transform t;
+	protected Renderer n;
 	protected Bounds bounds;
 
 	public virtual void Awake() {
 		r = rigidbody2D;
 		t = transform;
+		n = renderer;
 		effectiveMass = r.mass;
-		bounds = new Bounds(t.position,renderer.bounds.size);
+		bounds = n.bounds;
 	}
 
 	public virtual void OnCollisionEnter2D (Collision2D coll) {

@@ -46,7 +46,7 @@ public class Atom : Body {
 
 	public override Bounds GetBounds ()
 	{
-		bounds = new Bounds(t.position,renderer.bounds.size);
-		return base.GetBounds ();
+		bounds = renderer.bounds;
+		return base.GetBounds();
 	}
 }

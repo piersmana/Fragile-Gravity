@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 5fbf3a95592af5f4b8b38c03f5b606a5
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - atomPrefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
+  - clusterPrefab: {instanceID: 0}
+  - planetPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

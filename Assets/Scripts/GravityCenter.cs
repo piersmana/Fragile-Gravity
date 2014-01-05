@@ -6,9 +6,11 @@ public class GravityCenter : Body {
 	public static int maxAtoms = 1000;
 
 	public float gravityForce;
-	public float gravityDetectionRangeMultiplier = 15f;
+	public float gravityDetectionRangeMultiplier = 25f;
 
 	public float gravityDetectionRange;
+
+	//public float rotationSpeed = .025f;
 
 	protected Collider2D[] affectedBodies;
 	protected int countAffectedBodies = 0;
@@ -17,15 +19,21 @@ public class GravityCenter : Body {
 	public override void Awake () {
 		base.Awake();
 		gravityForce = r.mass;
-		gravityDetectionRange = t.localScale.magnitude * gravityDetectionRangeMultiplier;
+		gravityDetectionRange = t.localScale.x * gravityDetectionRangeMultiplier;
 		affectedBodies = new Collider2D[maxAtoms];
 		gravityLayermask = 1 << LayerMask.NameToLayer("FreeBodies");
 
 		Body[] childBodies = GetComponentsInChildren<Body>();
 		foreach (Body child in childBodies) {
-			bounds.Encapsulate(child.GetBounds());
+			if (child.gameObject != gameObject) {
+				bounds.Encapsulate(child.GetBounds());
+			}
 		}
 	}
+
+	//public virtual void Update () {
+		//t.RotateAround(t.position,Vector3.forward,rotationSpeed);
+	//}
 
 	public virtual void FixedUpdate () {
 
@@ -64,12 +72,17 @@ public class GravityCenter : Body {
 		//ADD: condition for growth
 	}	
 
+	public override Bounds GetBounds() {
+		bounds.center = n.bounds.center;
+		return base.GetBounds();
+	}
+
 	//ADD: destruction condition and effects
 
 	void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position,gravityDetectionRange);
-		Gizmos.color = Color.blue;
+		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireCube(bounds.center,bounds.size);
 	}
 }

@@ -6,15 +6,14 @@ public class GravityController_ParticleControl : MonoBehaviour {
 
 	public float growthSpeed  = 5f;
 
-	public ParticleSystem gravityIn;
-	public ParticleSystem gravityOut;
+	private ParticleSystem gravityParticleSystem;
 	
-	private Vector3 gravityInMinScale = new Vector3(1.4f,1.4f,1.4f);
-	private Vector3 gravityOutMinScale = new Vector3(.4f,.4f,.4f);
-	private Vector3 gravityInMaxScale = new Vector3(1f,1f,1f);
-	private Vector3 gravityOutMaxScale = new Vector3(1f,1f,1f);
+	private Vector3 gravityInMinScale = new Vector3(.8f,.8f,.8f);
+	private Vector3 gravityOutMinScale = new Vector3(1.2f,1.2f,1.2f);
+	private Vector3 gravityNormalScale = new Vector3(1f,1f,1f);
 
 	void Awake() {
+		gravityParticleSystem = GameObject.Find("GravityForceParticles").particleSystem;
 		UpdateParticleSystemRate(0);
 	}
 
@@ -31,11 +30,19 @@ public class GravityController_ParticleControl : MonoBehaviour {
 //	}
 
 	public void UpdateParticleSystemRate(float gravity) {
-		gravityOut.startSpeed = Mathf.Lerp(.05f, transform.localScale.x * -gravity, -gravity);
-		gravityOut.transform.localScale = Vector3.Lerp(gravityOutMinScale,gravityOutMaxScale,-gravity);
+		float gravityScale = (gravity + 1) / 2;
 
-		gravityIn.startSpeed = Mathf.Lerp(.05f, transform.localScale.x * gravity, gravity);
-		gravityIn.transform.localScale = Vector3.Lerp(gravityInMinScale,gravityInMaxScale,gravity);
+		gravityParticleSystem.startSpeed = transform.localScale.x * gravity; 
+
+		if (gravityParticleSystem.startSpeed == 0) 
+			gravityParticleSystem.startSpeed = 0.00001f;
+
+		if (gravity >= 0) {
+			gravityParticleSystem.transform.localScale = Vector3.Lerp(gravityInMinScale, gravityNormalScale, gravity);
+		}
+		else if (gravity < 0) {
+			gravityParticleSystem.transform.localScale = Vector3.Lerp(gravityOutMinScale, gravityNormalScale, -gravity);
+		}
 	}
 
 	public IEnumerator UpdateParticleSystemSize(float scale) {
