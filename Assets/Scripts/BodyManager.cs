@@ -22,7 +22,7 @@ public class BodyManager : MonoBehaviour {
 
 	public Vector3 hiddenPosition = new Vector3(99999f,99999f,0);
 
-	private Atom[] availableAtoms;
+	public Atom[] availableAtoms;
 	private AtomExplosionControl[] availableAtomExplosions;
 	
 	private GravityController player;
@@ -68,7 +68,7 @@ public class BodyManager : MonoBehaviour {
 
 	IEnumerator Level1Spawn() {
 		float range = player.gravityDetectionRange + 10;
-		Vector2 atomSpeed = new Vector2(-1000f,0);
+		Vector2 atomSpeed = new Vector2(-100f,0);
 		
 		SpawnAtom(new Vector3(5,0,0), Vector2.zero);
 		SpawnAtom(new Vector3(-5,0,0), Vector2.zero);
@@ -78,8 +78,17 @@ public class BodyManager : MonoBehaviour {
 		SpawnAtom(new Vector3(3.54f,-3.54f,0), Vector2.zero);
 		SpawnAtom(new Vector3(-3.54f,3.54f,0), Vector2.zero);
 		SpawnAtom(new Vector3(-3.54f,-3.54f,0), Vector2.zero);
-
-		yield return new WaitForSeconds(2f);
+		
+		yield return new WaitForSeconds(3f);
+		
+		for (int i = 0; i < TEMPspawnsPerLevel; i++) {
+			for (int j = 0; j < TEMPspawnsPerFrame; j++) {
+				SpawnAtom(new Vector3(range,Random.Range(-4f,4f),0), atomSpeed);
+			}
+			yield return new WaitForSeconds(.05f);
+		}
+		
+		yield return new WaitForSeconds(3f);
 		
 		for (int i = 0; i < TEMPspawnsPerLevel; i++) {
 			for (int j = 0; j < TEMPspawnsPerFrame; j++) {

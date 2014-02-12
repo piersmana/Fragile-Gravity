@@ -20,8 +20,8 @@ public class Atom : Body {
 		parentBody.AddMass(r.mass,bounds);
 		effectiveMass = parentBody.effectiveMass;
 
-		//ADD: Effects
-		//ADD: Start hardening subroutine
+		//TODO: Effects
+		//TODO: Start hardening subroutine
 
 	}
 	

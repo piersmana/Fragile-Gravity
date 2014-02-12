@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour {
 	}
 	
 	void LateUpdate () {
-		transform.position = Vector3.Lerp(transform.position, nextPosition, Time.deltaTime / panSpeed);
+		transform.position = Vector3.Lerp(transform.position, nextPosition, Time.deltaTime / panSpeed); //TODO: add threshold for lerp/zoom
 		
 		camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, nextZoom * zoomMarginPercent, Time.deltaTime / zoomSpeed);
 	}

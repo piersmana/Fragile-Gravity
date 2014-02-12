@@ -25,19 +25,17 @@ public class GravityController : GravityCenter {
 		particles.UpdateParticleSystemRate(gravityForce/massMax);
 	}
 
-	public override void FixedUpdate() {
-		base.FixedUpdate();
+	public void Update() {
 
 		Bounds bB = bounds;
-
-		if(countAffectedBodies > 0) {
-			for (int c = 0; c < countAffectedBodies; c++) {
-				bB.Encapsulate(affectedBodies[c].GetComponent<Body>().GetBounds());
-			}
-		}
-		else {
-			bB.extents += bB.center;
-			bB.center = transform.position;
+		bB.extents += bB.center;
+		bB.center = t.position;
+		
+		for (int i = manager.maxAtoms - 1; i >= 0; i--) {
+			if (manager.availableAtoms[i].g.activeSelf) 
+				bB.Encapsulate(manager.availableAtoms[i].GetBounds());
+			else 
+				manager.availableAtoms[i].g.SetActive(false);
 		}
 
 		cameraControl.UpdateViewport(bB);
@@ -45,20 +43,20 @@ public class GravityController : GravityCenter {
 
 	public void AlterForce (float g) {
 		//gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
-		gravityForce = Mathf.Clamp(g,massMin,massMax);
+		gravityForce = Mathf.Clamp(g,massMin,massMax); //TODO: make this a % change
 		particles.UpdateParticleSystemRate(gravityForce/massMax);
+	}
+	
+	public override void AddMass (float m, Bounds b)
+	{
+		base.AddMass(m, b);
+		massMax += m;
+		massMin -= m;
 	}
 	
 	public override void AddMass (float m)
 	{
-		base.AddMass (m);
-		massMax += m;
-		massMin -= m;
-	}
-
-	public override void AddMass (float m, Bounds b)
-	{
-		base.AddMass (m, b);
+		base.AddMass(m);
 		massMax += m;
 		massMin -= m;
 	}

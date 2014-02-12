@@ -110,9 +110,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b5a56fa0e19db4b8adf963d1a6ca68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardness: 50
+  hardness: 20
+  hardnessDamageThreshold: 5
+  hardnessMax: 100
+  hardnessGrowthRate: .200000003
   effectiveMass: 0
-  explosionPrefab: {fileID: 100000, guid: d349145c0fa70d147bb0495baed7bf58, type: 2}
+  r: {fileID: 0}
+  t: {fileID: 0}
+  n: {fileID: 0}
+  g: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
