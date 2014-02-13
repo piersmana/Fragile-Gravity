@@ -12,7 +12,7 @@ GameObject:
   - 198: {fileID: 19800000}
   - 114: {fileID: 11400000}
   m_Layer: 2
-  m_Name: AtomExplosion
+  m_Name: MeteorExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ ParticleSystem:
   InitialModule:
     enabled: 1
     startLifetime:
-      scalar: 1.29999995
+      scalar: .5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -90,7 +90,7 @@ ParticleSystem:
         m_PostInfinity: 2
       minMaxState: 1
     startSpeed:
-      scalar: 5
+      scalar: .800000012
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -211,13 +211,13 @@ ParticleSystem:
         m_NumAlphaKeys: 2
       minColor:
         serializedVersion: 2
-        rgba: 2432696575
+        rgba: 1879048009
       maxColor:
         serializedVersion: 2
-        rgba: 2835349503
+        rgba: 2667577343
       minMaxState: 0
     startSize:
-      scalar: .800000012
+      scalar: .200000003
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -279,12 +279,12 @@ ParticleSystem:
       minMaxState: 0
     gravityModifier: 0
     inheritVelocity: 0
-    maxNumParticles: 25
+    maxNumParticles: 5
   ShapeModule:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: .5
+    radius: .200000003
     angle: 25
     length: 5
     boxX: 1
@@ -297,7 +297,7 @@ ParticleSystem:
     enabled: 1
     m_Type: 0
     rate:
-      scalar: 20
+      scalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:

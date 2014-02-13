@@ -209,7 +209,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hardness: 100
+  hardnessDamageThreshold: 5
+  hardnessMax: 100
+  hardnessGrowthRate: .200000003
   effectiveMass: 0
+  r: {fileID: 0}
+  t: {fileID: 0}
+  n: {fileID: 0}
+  g: {fileID: 0}
   gravityForce: 0
   gravityDetectionRangeMultiplier: 2.5
   gravityDetectionRange: 10

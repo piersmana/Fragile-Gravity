@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AtomExplosionControl : MonoBehaviour {
+public class ExplosionControl : MonoBehaviour {
 
 	private ParticleSystem particles;
 

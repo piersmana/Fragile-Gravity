@@ -51,6 +51,7 @@ public class Atom : Body {
 			t.parent = null;
 			parentBody = null;
 			effectiveMass = r.mass;
+			gameObject.layer = LayerMask.NameToLayer("FreeBodies");
 		}
 		base.RemoveBody();
 	}

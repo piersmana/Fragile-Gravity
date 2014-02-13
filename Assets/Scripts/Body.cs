@@ -20,6 +20,7 @@ public abstract class Body : MonoBehaviour {
 	public GameObject g;
 
 	protected Bounds bounds;
+	protected float initHardness;
 
 	public virtual void Awake() {
 		r = rigidbody2D;
@@ -28,6 +29,7 @@ public abstract class Body : MonoBehaviour {
 		g = gameObject;
 		effectiveMass = r.mass;
 		bounds = n.bounds;
+		initHardness = hardness;
 	}
 
 	public virtual void OnCollisionEnter2D (Collision2D coll) {
@@ -68,6 +70,7 @@ public abstract class Body : MonoBehaviour {
 	public virtual void RemoveBody() {
 		//t.position = BodyManager.Instance.hiddenPosition;
 		g.SetActive(false);
+		hardness = initHardness;
 	}
 
 	public virtual Bounds GetBounds() {

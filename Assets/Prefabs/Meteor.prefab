@@ -10,10 +10,10 @@ GameObject:
   - 4: {fileID: 400000}
   - 58: {fileID: 5800000}
   - 50: {fileID: 5000000}
-  - 212: {fileID: 21200000}
   - 114: {fileID: 11400000}
-  m_Layer: 8
-  m_Name: GravityCenter
+  - 96: {fileID: 9600000}
+  m_Layer: 9
+  m_Name: Meteor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 167.44339, y: -84.303093, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 5.89950418, y: -3.2206738, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!50 &5000000
@@ -36,12 +36,12 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mass: 10
+  m_Mass: .00100000005
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -53,34 +53,11 @@ CircleCollider2D:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: 042971712806d8b43822cc802a68fac3, type: 2}
-  m_IsTrigger: 0
-  m_Radius: .5
+  m_IsTrigger: 1
+  m_Radius: .0500000007
   m_Center: {x: 0, y: 0}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd443ad137a853042bf0bf3bfba3d331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hardness: 100
-  hardnessDamageThreshold: 5
-  hardnessMax: 100
-  hardnessGrowthRate: .200000003
-  effectiveMass: 0
-  r: {fileID: 0}
-  t: {fileID: 0}
-  n: {fileID: 0}
-  g: {fileID: 0}
-  gravityForce: 0
-  gravityDetectionRangeMultiplier: 15
-  gravityDetectionRange: 150
---- !u!212 &21200000
-SpriteRenderer:
+--- !u!96 &9600000
+TrailRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -91,7 +68,7 @@ SpriteRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8978a949988b5d94d8464e0941aa4835, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -100,8 +77,47 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortingLayerID: 0
-  m_Sprite: {fileID: 21300000, guid: 6812ff55a4f388f4f8fe3205ddbfbc59, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Time: .5
+  m_StartWidth: .200000003
+  m_EndWidth: .0500000007
+  m_Colors:
+    m_Color[0]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[1]:
+      serializedVersion: 2
+      rgba: 2768240639
+    m_Color[2]:
+      serializedVersion: 2
+      rgba: 1560281087
+    m_Color[3]:
+      serializedVersion: 2
+      rgba: 771751935
+    m_Color[4]:
+      serializedVersion: 2
+      rgba: 16777215
+  m_MinVertexDistance: .100000001
+  m_Autodestruct: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc73af4310cfbe409bfb34c72fe2ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: .100000001
+  hardnessDamageThreshold: 0
+  hardnessMax: 1
+  hardnessGrowthRate: 0
+  effectiveMass: 0
+  r: {fileID: 0}
+  t: {fileID: 0}
+  n: {fileID: 0}
+  g: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

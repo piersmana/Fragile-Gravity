@@ -101,14 +101,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba9c8547ee7c574aa09eb484cf3a6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TEMPspawnsPerFrame: 1
+  TEMPspawnsPerFrame: 5
   TEMPspawnsPerLevel: 10
   atomPrefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
   atomExplosionPrefab: {fileID: 100000, guid: d349145c0fa70d147bb0495baed7bf58, type: 2}
-  maxAtoms: 50
+  maxAtoms: 250
   maxAtomExplosions: 50
-  hiddenPosition: {x: 99999, y: 99999, z: 0}
   availableAtoms: []
+  meteorPrefab: {fileID: 100000, guid: 3b9c810cda4e8784e82f2a2e32a4eb28, type: 2}
+  meteorExplosionPrefab: {fileID: 100000, guid: 3030f3e89e8a7e74bbeecd9a27d2f15d,
+    type: 2}
+  maxMeteors: 50
+  maxMeteorExplosions: 50
+  availableMeteors: []
+  hiddenPosition: {x: 99999, y: 99999, z: 0}
 --- !u!4 &144718956
 Transform:
   m_ObjectHideFlags: 0
@@ -341,6 +347,14 @@ Prefab:
     - target: {fileID: 5000000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
       propertyPath: m_Mass
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 19800002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
+      propertyPath: InitialModule.startColor.maxColor.rgba
+      value: 2483027967
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
@@ -580,7 +594,7 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 4278190275
+        rgba: 2483027967
       minMaxState: 0
     startSize:
       scalar: .400000006
