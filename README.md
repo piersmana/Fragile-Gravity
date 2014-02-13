@@ -3,8 +3,8 @@ Fragile Gravity
 
 A 2D "physics" game I'm developing using Unity.
 
-Currently in very early stages. Feel free to download the source, all non-proprietary assets are included in this repository.
+Currently in very early stages. Feel free to download the source, all assets included in this repository are designed by me and are free to use.
 
-Controls: A/D (or left arrow/right arrow) to lower or increase gravity, respectively.
+Controls: Click and drag (or A/D / left arrow/right arrow) to lower or increase gravity.
 
-Manage your planet's fluctuating gravity and attempt to guide other celestial bodies to the ground (without crashing or disintegrating). Build your planet's surface out to make it grow as large as possible, while keeping its core safe with a protective crust.
+Manage your planet's fluctuating gravity, and attempt to guide other celestial bodies down to create your planet's surface. Help your planet grow as large as possible while keeping its core safe with a protective crust.
