@@ -108,6 +108,7 @@ MonoBehaviour:
   maxAtoms: 50
   maxAtomExplosions: 50
   hiddenPosition: {x: 99999, y: 99999, z: 0}
+  availableAtoms: []
 --- !u!4 &144718956
 Transform:
   m_ObjectHideFlags: 0
@@ -1595,6 +1596,10 @@ MonoBehaviour:
   hardnessMax: 100
   hardnessGrowthRate: .200000003
   effectiveMass: 0
+  r: {fileID: 0}
+  t: {fileID: 0}
+  n: {fileID: 0}
+  g: {fileID: 0}
   gravityForce: 0
   gravityDetectionRangeMultiplier: 5
   gravityDetectionRange: 20
