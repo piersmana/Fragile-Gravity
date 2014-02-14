@@ -356,6 +356,14 @@ Prefab:
       propertyPath: InitialModule.startColor.maxColor.rgba
       value: 2483027967
       objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
+      propertyPath: SubModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
+      propertyPath: SubModule.subEmitterBirth
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
   m_RootGameObject: {fileID: 2088795041}

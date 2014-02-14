@@ -4,9 +4,12 @@ using System.Collections;
 public class Meteor : Body {
 
 	private TrailRenderer trail;
+	private ParticleSystem particles;
 
 	public override void Awake () {
 		trail = GetComponent<TrailRenderer>();
+		particles = particleSystem;
+		particles.enableEmission = false;
 
 		base.Awake();
 
@@ -20,9 +23,11 @@ public class Meteor : Body {
 
 	public void EnableBody(Vector3 pos, Vector2 force) {
 		base.EnableBody();
+		r.isKinematic = false;
 		t.position = pos;
 		r.AddForce(force);
-		trail.enabled = true;
+		StartCoroutine(WaitForTrailFade(particles.startLifetime));
+		//trail.enabled = true;
 	}
 
 	public override void RemoveBody() {
@@ -30,14 +35,14 @@ public class Meteor : Body {
 		BodyManager.Instance.SpawnMeteorExplosion(t.position);
 		r.isKinematic = true;
 		r.velocity = Vector2.zero;
-		StartCoroutine(WaitForTrailFade(trail.time));
+		StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
 	}
 
 	IEnumerator WaitForTrailFade(float t) {
-		yield return new WaitForSeconds(t * 1.5f);
-		r.isKinematic = false;
-		trail.enabled = false;
-		base.RemoveBody();
+		yield return new WaitForSeconds(t);
+		particles.enableEmission = !particles.enableEmission;
+		//trail.enabled = false;
+		if (particles.enableEmission == false) {base.RemoveBody();}
 	}
 
 	public override Bounds GetBounds ()
