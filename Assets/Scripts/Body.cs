@@ -19,10 +19,13 @@ public abstract class Body : MonoBehaviour {
 	[HideInInspector]
 	public GameObject g;
 
+	[HideInInspector]
+	public GameManager.BodyTypes bodyType = GameManager.BodyTypes.Unknown;
+
 	protected Bounds bounds;
 	protected float initHardness;
 
-	public virtual void Awake() {
+	protected virtual void Awake() {
 		r = rigidbody2D;
 		t = transform;
 		n = renderer;
@@ -32,45 +35,48 @@ public abstract class Body : MonoBehaviour {
 		initHardness = hardness;
 	}
 
-	public virtual void OnCollisionEnter2D (Collision2D coll) {
+	protected virtual void OnCollisionEnter2D (Collision2D coll) {
 		//print ("Impact=" + (Mathf.Abs(Vector2.Dot (coll.contacts[0].normal,coll.relativeVelocity) * coll.rigidbody.mass)).ToString());
 		if (coll.contacts.Length > 0) { //BUG: third collision with no contacts being generated!
-			float impact = Mathf.Abs(Vector2.Dot (coll.contacts[0].normal,coll.relativeVelocity) * coll.gameObject.GetComponent<Body>().effectiveMass);
-			if (impact >= hardnessDamageThreshold) {
-				hardness -= impact;
-				if (hardness <= 0) {
-					RemoveBody();
-				}
-			}
+			DamageOnCollision(coll);
 		//	print ("Impact = " + (Mathf.Abs(Vector2.Dot (coll.contacts[0].normal,coll.relativeVelocity) * coll.rigidbody.mass)).ToString() + ", Hardness = " + hardness); //TEST: balance
 		}
-		//TODO: effects
 	}
 	
-	public virtual void OnTriggerEnter2D (Collider2D coll) {
+	protected virtual void OnTriggerEnter2D (Collider2D coll) {
 		if (coll.name == "CameraRange") {
-			coll.transform.root.GetComponent<GravityCenter>().AddBody(this);
+			//TODO: Add to camera watch list
 		}
 	}
 	
-	public virtual void OnTriggerExit2D (Collider2D coll) {
+	protected virtual void OnTriggerExit2D (Collider2D coll) {
 		if (coll.name == "GravityRange") {
-			coll.transform.root.GetComponent<GravityCenter>().RemoveBody(this);
+			//TODO: Remove from camera watch list
 		}
 
 		if (coll.name == "CameraRange") {
-			RemoveBody();
+			TerminateBody();
 		}
 	}
 
-	public virtual void EnableBody() {
-		g.SetActive(true);
+	protected void DamageOnCollision(Collision2D coll) {
+		float impact = Mathf.Abs(Vector2.Dot (coll.contacts[0].normal,coll.relativeVelocity) * coll.gameObject.GetComponent<Body>().effectiveMass);
+		if (impact >= hardnessDamageThreshold) {
+			hardness -= impact;
+			if (hardness <= 0) {
+				TerminateBody();
+			}
+		}
 	}
 
-	public virtual void RemoveBody() {
-		//t.position = BodyManager.Instance.hiddenPosition;
-		g.SetActive(false);
+	public virtual void InitializeBody(Vector3 pos, Vector2 force) {
+		t.position = pos;
+		r.AddForce(force);
+	}
+
+	public virtual void TerminateBody() {
 		hardness = initHardness;
+		GameManager.Instance.ReclaimBody(this);
 	}
 
 	public virtual Bounds GetBounds() {

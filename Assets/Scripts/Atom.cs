@@ -5,9 +5,9 @@ public class Atom : Body {
 
 	private GravityCenter parentBody;
 
-	public override void Awake () {
+	protected override void Awake () {
 		base.Awake();
-
+		bodyType = GameManager.BodyTypes.Atom;
 		//r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
 	}
 	
@@ -17,7 +17,7 @@ public class Atom : Body {
 		t.parent = g.transform;
 		gameObject.layer = LayerMask.NameToLayer("OwnedBodies");
 		parentBody = g;
-		parentBody.AddMass(r.mass,bounds);
+		parentBody.AddChildBody(this);
 		effectiveMass = parentBody.effectiveMass;
 
 		//TODO: Effects
@@ -25,7 +25,7 @@ public class Atom : Body {
 
 	}
 	
-	public override void OnCollisionEnter2D (Collision2D coll) {
+	protected override void OnCollisionEnter2D (Collision2D coll) {
 		base.OnCollisionEnter2D(coll);
 	}
 
@@ -36,24 +36,22 @@ public class Atom : Body {
 		}
 	}
 
-	public void EnableBody(Vector3 pos, Vector2 force) {
-		base.EnableBody();
-		t.position = pos;
-		r.AddForce(force);
+	public override void InitializeBody(Vector3 pos, Vector2 force) {
+		base.InitializeBody(pos, force);
 	}
 
-	public override void RemoveBody() {
+	public override void TerminateBody() {
 		//Instantiate(explosionPrefab,t.position,t.localRotation);
-		BodyManager.Instance.SpawnAtomExplosion(t.position);
+		GameManager.Instance.SpawnEffect(t.position, Quaternion.identity, GameManager.BodyTypes.Atom);
 		if (parentBody) {
 			r.isKinematic = false;
-			parentBody.AddMass(-r.mass);
+			parentBody.RemoveChildBody(this);
 			t.parent = null;
 			parentBody = null;
 			effectiveMass = r.mass;
 			gameObject.layer = LayerMask.NameToLayer("FreeBodies");
 		}
-		base.RemoveBody();
+		base.TerminateBody();
 	}
 
 	public override Bounds GetBounds ()

@@ -125,7 +125,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mass: 10
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
@@ -184,7 +184,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Radius: 12
+  m_Radius: 24
   m_Center: {x: 0, y: 0}
 --- !u!58 &5800004
 CircleCollider2D:
@@ -195,7 +195,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Radius: 10
+  m_Radius: 20
   m_Center: {x: 0, y: 0}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -218,8 +218,8 @@ MonoBehaviour:
   n: {fileID: 0}
   g: {fileID: 0}
   gravityForce: 0
-  gravityDetectionRangeMultiplier: 2.5
-  gravityDetectionRange: 10
+  gravityDetectionRangeMultiplier: 5
+  gravityDetectionRange: 20
   massMaxMultiplier: 10
 --- !u!114 &11400002
 MonoBehaviour:
@@ -411,7 +411,7 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 4278190275
+        rgba: 2483027967
       minMaxState: 0
     startSize:
       scalar: .400000006

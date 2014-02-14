@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,14 +13,10 @@ public class GravityCenter : Body {
 
 	protected int gravityLayermask;
 
-	protected BodyManager manager;
-
-	public override void Awake () {
+	protected override void Awake () {
 		base.Awake();
 		gravityForce = r.mass;
 		gravityDetectionRange = t.localScale.x * gravityDetectionRangeMultiplier;
-
-		manager = GameObject.FindGameObjectWithTag("GameController").GetComponent<BodyManager>();
 
 		Body[] childBodies = GetComponentsInChildren<Body>();
 		foreach (Body child in childBodies) {
@@ -28,46 +24,42 @@ public class GravityCenter : Body {
 				bounds.Encapsulate(child.GetBounds());
 			}
 		}
+		//TODO: Replace with camera lookat
+
+		bodyType = GameManager.BodyTypes.GravityCenter;
 	}
 
 	//public virtual void Update () {
 		//t.RotateAround(t.position,Vector3.forward,rotationSpeed);
 	//}
 
-	public virtual void FixedUpdate () {
+	protected virtual void FixedUpdate () {
+		Body[] activeBodies = GameManager.Instance.GetActiveBodies();
+		Body cachedBody;
 
-		for (int i = manager.maxAtoms - 1; i >= 0; i--) {
-			if (manager.availableAtoms[i].g.activeSelf) {					
-				Vector2 delta = new Vector2(t.position.x - manager.availableAtoms[i].t.position.x, t.position.y - manager.availableAtoms[i].t.position.y);
-				manager.availableAtoms[i].r.AddForce(delta.normalized * gravityForce * manager.availableAtoms[i].r.mass / delta.sqrMagnitude);
-			}
-			else 
-				manager.availableAtoms[i].g.SetActive(false);
+		for (int i = activeBodies.Length - 1; i >= 0; i--) {
+			cachedBody = activeBodies[i];
+			Vector2 delta = new Vector2(t.position.x - cachedBody.t.position.x, t.position.y - cachedBody.t.position.y);
+			cachedBody.r.AddForce(delta.normalized * gravityForce * cachedBody.r.mass / delta.sqrMagnitude);
 		}
 	}
 
-	public override void OnCollisionEnter2D (Collision2D coll) {
+	protected override void OnCollisionEnter2D (Collision2D coll) {
 		base.OnCollisionEnter2D(coll);
 	}
 
-	public virtual void AddBody(Body b) {
+	public virtual void AddChildBody(Body b) {
 		//affectedBodies.Add(b);
+		AddMass(b.r.mass);
+		bounds.Encapsulate(b.GetBounds());
 	}
 
-	public virtual void RemoveBody(Body b) {
+	public virtual void RemoveChildBody(Body b) {
 		//affectedBodies.Remove(b);
+		AddMass(-b.r.mass);
 	}
-	
-	public virtual void AddMass(float m, Bounds b) {
 		
-		r.mass += m;
-		effectiveMass = r.mass;
-		bounds.Encapsulate(b);
-		
-		//TODO: condition for growth
-	}
-	
-	public virtual void AddMass(float m) {
+	protected virtual void AddMass(float m) {
 		
 		r.mass += m;
 		effectiveMass = r.mass;

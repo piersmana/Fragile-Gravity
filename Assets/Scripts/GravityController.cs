@@ -12,30 +12,32 @@ public class GravityController : GravityCenter {
 
 	private CameraController cameraControl;
 
-	public override void Awake () {
+	protected override void Awake () {
 		base.Awake ();
 		massMax = r.mass *  massMaxMultiplier;
 		massMin = r.mass * -massMaxMultiplier;
 		particles = GetComponent<GravityController_ParticleControl>();
 				
 		cameraControl = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+
+		bodyType = GameManager.BodyTypes.GravityController;
 	}
 
 	void Start() {
 		particles.UpdateParticleSystemRate(gravityForce/massMax);
 	}
 
-	public void Update() {
+	protected void Update() {
+		Body[] activeBodies = GameManager.Instance.GetActiveBodies();
 
 		Bounds bB = bounds;
 		bB.extents += bB.center;
 		bB.center = t.position;
-		
-		for (int i = manager.maxAtoms - 1; i >= 0; i--) {
-			if (manager.availableAtoms[i].g.activeSelf) 
-				bB.Encapsulate(manager.availableAtoms[i].GetBounds());
-			else 
-				manager.availableAtoms[i].g.SetActive(false);
+
+		for (int i = activeBodies.Length - 1; i >= 0; i--) {
+			if (activeBodies[i].bodyType != GameManager.BodyTypes.Meteor)
+				bB.Encapsulate(activeBodies[i].GetBounds());
+				//TODO: Remove, instead use camera watch list
 		}
 
 		cameraControl.UpdateViewport(bB);
@@ -46,15 +48,8 @@ public class GravityController : GravityCenter {
 		gravityForce = Mathf.Clamp(g,massMin,massMax); //TODO: make this a % change
 		particles.UpdateParticleSystemRate(gravityForce/massMax);
 	}
-	
-	public override void AddMass (float m, Bounds b)
-	{
-		base.AddMass(m, b);
-		massMax += m;
-		massMin -= m;
-	}
-	
-	public override void AddMass (float m)
+		
+	protected override void AddMass (float m)
 	{
 		base.AddMass(m);
 		massMax += m;

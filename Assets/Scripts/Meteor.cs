@@ -3,36 +3,30 @@ using System.Collections;
 
 public class Meteor : Body {
 
-	private TrailRenderer trail;
 	private ParticleSystem particles;
 
-	public override void Awake () {
-		trail = GetComponent<TrailRenderer>();
+	protected override void Awake () {
 		particles = particleSystem;
 		particles.enableEmission = false;
 
 		base.Awake();
 
-		//r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
+		bodyType = GameManager.BodyTypes.Meteor;
 	}
 		
-	public override void OnTriggerEnter2D (Collider2D coll) {
-		if (!coll.collider2D.isTrigger) RemoveBody ();
+	protected override void OnTriggerEnter2D (Collider2D coll) {
+		if (!coll.collider2D.isTrigger) TerminateBody ();
 		base.OnTriggerEnter2D(coll);
 	}
 
-	public void EnableBody(Vector3 pos, Vector2 force) {
-		base.EnableBody();
+	public override void InitializeBody(Vector3 pos, Vector2 force) {
 		r.isKinematic = false;
-		t.position = pos;
-		r.AddForce(force);
+		base.InitializeBody(pos, force);
 		StartCoroutine(WaitForTrailFade(particles.startLifetime));
-		//trail.enabled = true;
 	}
 
-	public override void RemoveBody() {
-		//Instantiate(explosionPrefab,t.position,t.localRotation);
-		BodyManager.Instance.SpawnMeteorExplosion(t.position);
+	public override void TerminateBody() {
+		GameManager.Instance.SpawnEffect(t.position, t.localRotation, GameManager.BodyTypes.Meteor);
 		r.isKinematic = true;
 		r.velocity = Vector2.zero;
 		StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
@@ -41,8 +35,7 @@ public class Meteor : Body {
 	IEnumerator WaitForTrailFade(float t) {
 		yield return new WaitForSeconds(t);
 		particles.enableEmission = !particles.enableEmission;
-		//trail.enabled = false;
-		if (particles.enableEmission == false) {base.RemoveBody();}
+		if (particles.enableEmission == false) {base.TerminateBody();}
 	}
 
 	public override Bounds GetBounds ()
