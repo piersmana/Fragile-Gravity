@@ -101,20 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef402db4ffccb8e45b30c04ccf040aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atomPrefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
+  meteorPrefab: {fileID: 100000, guid: 3b9c810cda4e8784e82f2a2e32a4eb28, type: 2}
+  explosionPrefab: {fileID: 100000, guid: 3030f3e89e8a7e74bbeecd9a27d2f15d, type: 2}
+  maxAtoms: 250
+  maxMeteors: 50
+  maxExplosions: 50
   TEMPspawnsPerFrame: 5
   TEMPspawnsPerLevel: 10
-  atomPrefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
-  atomExplosionPrefab: {fileID: 100000, guid: d349145c0fa70d147bb0495baed7bf58, type: 2}
-  maxAtoms: 250
-  maxAtomExplosions: 50
-  availableAtoms: []
-  meteorPrefab: {fileID: 100000, guid: 3b9c810cda4e8784e82f2a2e32a4eb28, type: 2}
-  meteorExplosionPrefab: {fileID: 100000, guid: 3030f3e89e8a7e74bbeecd9a27d2f15d,
-    type: 2}
-  maxMeteors: 50
-  maxMeteorExplosions: 50
-  availableMeteors: []
-  hiddenPosition: {x: 99999, y: 99999, z: 0}
 --- !u!4 &144718956
 Transform:
   m_ObjectHideFlags: 0
@@ -362,6 +356,10 @@ Prefab:
     - target: {fileID: 11400000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
       propertyPath: massMaxMultiplier
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9c3071f785b6da4bb0e83fbd9e3f15e, type: 2}
@@ -1572,15 +1570,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57a0cad9b161844caf657d3e72937d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  r: {fileID: 0}
+  t: {fileID: 0}
+  n: {fileID: 0}
+  g: {fileID: 0}
   hardness: 100
   hardnessDamageThreshold: 5
   hardnessMax: 100
   hardnessGrowthRate: .200000003
   effectiveMass: 0
-  r: {fileID: 0}
-  t: {fileID: 0}
-  n: {fileID: 0}
-  g: {fileID: 0}
   gravityForce: 0
   gravityDetectionRangeMultiplier: 5
   gravityDetectionRange: 20

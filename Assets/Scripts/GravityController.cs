@@ -19,8 +19,6 @@ public class GravityController : GravityCenter {
 		particles = GetComponent<GravityController_ParticleControl>();
 				
 		cameraControl = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-
-		bodyType = GameManager.BodyTypes.GravityController;
 	}
 
 	void Start() {
@@ -28,14 +26,14 @@ public class GravityController : GravityCenter {
 	}
 
 	protected void Update() {
-		Body[] activeBodies = GameManager.Instance.GetActiveBodies();
+		Body[] activeBodies = Body.GetActiveBodies();
 
 		Bounds bB = bounds;
 		bB.extents += bB.center;
 		bB.center = t.position;
 
 		for (int i = activeBodies.Length - 1; i >= 0; i--) {
-			if (activeBodies[i].bodyType != GameManager.BodyTypes.Meteor)
+			//if (activeBodies[i].bodyType != GameManager.BodyTypes.Meteor)
 				bB.Encapsulate(activeBodies[i].GetBounds());
 				//TODO: Remove, instead use camera watch list
 		}

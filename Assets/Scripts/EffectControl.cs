@@ -1,33 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EffectControl : MonoBehaviour {
+public class EffectControl : PooledObject {
 		
-	[HideInInspector]
-	public Transform t;
-	[HideInInspector]
-	public Renderer n;
-	[HideInInspector]
-	public GameObject g;
-
 	private ParticleSystem particles;
 
-	void Awake() {
-		t = transform;
-		n = renderer;
-		g = gameObject;
-
+	protected override void Awake() {
+		base.Awake();
 		particles = particleSystem;
 	}
 
 	void Update() {
 		if (particles.isPlaying == false)
-			GameManager.Instance.ReclaimEffect(this);
+			Reclaim();
 	}
 
-	public void InitializeEffect(Vector3 pos, Quaternion rot) {
+	protected override void Initialize(Vector3 pos, Quaternion rot, Vector2 velocity) {
 		t.position = pos;
 		t.localRotation = rot;
+		r.velocity = velocity;
 		particles.Play();
 	}
+
+	protected override void Terminate() {}
 }

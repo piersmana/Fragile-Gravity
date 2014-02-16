@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof(Rigidbody2D))]
-public abstract class Body : MonoBehaviour {
+public abstract class Body : PooledObject {
 	
 	public float hardness = 10;
 	public float hardnessDamageThreshold = 5;
@@ -10,29 +10,40 @@ public abstract class Body : MonoBehaviour {
 
 	public float effectiveMass;
 
-	[HideInInspector]
-	public Rigidbody2D r;
-	[HideInInspector]
-	public Transform t;
-	[HideInInspector]
-	public Renderer n;
-	[HideInInspector]
-	public GameObject g;
-
-	[HideInInspector]
-	public GameManager.BodyTypes bodyType = GameManager.BodyTypes.Unknown;
-
 	protected Bounds bounds;
 	protected float initHardness;
+	
+	//private static List<Body> _activeBodies;
+	private static Body[] activeBodies;
+	private static bool refreshActiveBodies;
 
-	protected virtual void Awake() {
-		r = rigidbody2D;
-		t = transform;
-		n = renderer;
-		g = gameObject;
+	protected override void Awake() {
+		base.Awake();
+
 		effectiveMass = r.mass;
 		bounds = n.bounds;
 		initHardness = hardness;
+
+		activeBodies = new Body[0];
+	}
+
+	public static Body[] GetActiveBodies() {
+		/*if (refreshActiveBodies) {
+			_activeBodies.Clear();
+			for (int i = 0; i < availableAtoms.Length; i++) {
+				if (availableAtoms[i].g.activeSelf)
+					_activeBodies.Enqueue(availableAtoms[i]);
+			}
+			for (int i = 0; i < availableMeteors.Length; i++) {
+				if (availableMeteors[i].g.activeSelf)
+					_activeBodies.Enqueue(availableMeteors[i]);
+			}
+			activeBodies = _activeBodies.ToArray();
+			refreshActiveBodies = false;
+		}
+		*/
+		return activeBodies;
+
 	}
 
 	protected virtual void OnCollisionEnter2D (Collision2D coll) {
@@ -43,11 +54,11 @@ public abstract class Body : MonoBehaviour {
 		}
 	}
 	
-	protected virtual void OnTriggerEnter2D (Collider2D coll) {
-		if (coll.name == "CameraRange") {
-			//TODO: Add to camera watch list
-		}
-	}
+//	protected virtual void OnTriggerEnter2D (Collider2D coll) {
+//		if (coll.name == "CameraRange") {
+//			//TODO: Add to camera watch list
+//		}
+//	}
 	
 	protected virtual void OnTriggerExit2D (Collider2D coll) {
 		if (coll.name == "GravityRange") {
@@ -55,7 +66,7 @@ public abstract class Body : MonoBehaviour {
 		}
 
 		if (coll.name == "CameraRange") {
-			TerminateBody();
+			Reclaim();
 		}
 	}
 
@@ -64,19 +75,19 @@ public abstract class Body : MonoBehaviour {
 		if (impact >= hardnessDamageThreshold) {
 			hardness -= impact;
 			if (hardness <= 0) {
-				TerminateBody();
+				Reclaim();
 			}
 		}
 	}
 
-	public virtual void InitializeBody(Vector3 pos, Vector2 force) {
+	protected override void Initialize(Vector3 pos, Quaternion rot, Vector2 velocity) {
 		t.position = pos;
-		r.AddForce(force);
+		t.localRotation = rot;
+		r.velocity = velocity;
 	}
 
-	public virtual void TerminateBody() {
+	protected override void Terminate() {
 		hardness = initHardness;
-		GameManager.Instance.ReclaimBody(this);
 	}
 
 	public virtual Bounds GetBounds() {

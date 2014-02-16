@@ -7,7 +7,6 @@ public class Atom : Body {
 
 	protected override void Awake () {
 		base.Awake();
-		bodyType = GameManager.BodyTypes.Atom;
 		//r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
 	}
 	
@@ -36,13 +35,9 @@ public class Atom : Body {
 		}
 	}
 
-	public override void InitializeBody(Vector3 pos, Vector2 force) {
-		base.InitializeBody(pos, force);
-	}
-
-	public override void TerminateBody() {
+	protected override void Terminate() {
 		//Instantiate(explosionPrefab,t.position,t.localRotation);
-		GameManager.Instance.SpawnEffect(t.position, Quaternion.identity, GameManager.BodyTypes.Atom);
+		PooledObject.Spawn<EffectControl>(t.position);
 		if (parentBody) {
 			r.isKinematic = false;
 			parentBody.RemoveChildBody(this);
@@ -51,7 +46,7 @@ public class Atom : Body {
 			effectiveMass = r.mass;
 			gameObject.layer = LayerMask.NameToLayer("FreeBodies");
 		}
-		base.TerminateBody();
+		base.Terminate();
 	}
 
 	public override Bounds GetBounds ()

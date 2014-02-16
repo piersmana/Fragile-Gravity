@@ -18,15 +18,7 @@ public class GravityCenter : Body {
 		gravityForce = r.mass;
 		gravityDetectionRange = t.localScale.x * gravityDetectionRangeMultiplier;
 
-		Body[] childBodies = GetComponentsInChildren<Body>();
-		foreach (Body child in childBodies) {
-			if (child.gameObject != gameObject) {
-				bounds.Encapsulate(child.GetBounds());
-			}
-		}
 		//TODO: Replace with camera lookat
-
-		bodyType = GameManager.BodyTypes.GravityCenter;
 	}
 
 	//public virtual void Update () {
@@ -34,7 +26,7 @@ public class GravityCenter : Body {
 	//}
 
 	protected virtual void FixedUpdate () {
-		Body[] activeBodies = GameManager.Instance.GetActiveBodies();
+		Body[] activeBodies = Body.GetActiveBodies();
 		Body cachedBody;
 
 		for (int i = activeBodies.Length - 1; i >= 0; i--) {

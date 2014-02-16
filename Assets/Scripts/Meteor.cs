@@ -7,35 +7,47 @@ public class Meteor : Body {
 
 	protected override void Awake () {
 		particles = particleSystem;
-		particles.enableEmission = false;
+		particles.enableEmission = true;
 
 		base.Awake();
-
-		bodyType = GameManager.BodyTypes.Meteor;
 	}
 		
-	protected override void OnTriggerEnter2D (Collider2D coll) {
-		if (!coll.collider2D.isTrigger) TerminateBody ();
-		base.OnTriggerEnter2D(coll);
+	protected void OnTriggerEnter2D (Collider2D coll) {
+		if (!coll.collider2D.isTrigger) 
+			StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
+//		base.OnTriggerEnter2D(coll);
 	}
 
-	public override void InitializeBody(Vector3 pos, Vector2 force) {
-		r.isKinematic = false;
-		base.InitializeBody(pos, force);
-		StartCoroutine(WaitForTrailFade(particles.startLifetime));
+	protected override void OnTriggerExit2D (Collider2D coll) {
+		if (coll.name == "CameraRange") {
+			StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
+		}
+	} 
+
+	protected override void Initialize(Vector3 pos, Quaternion rot, Vector2 velocity) {
+		StartCoroutine(WaitForTrailLead(particles.startLifetime * 1.1f));
+		base.Initialize(pos, rot, velocity);
+		//StartCoroutine(WaitForTrailFade(particles.startLifetime));
 	}
 
-	public override void TerminateBody() {
-		GameManager.Instance.SpawnEffect(t.position, t.localRotation, GameManager.BodyTypes.Meteor);
+	protected override void Terminate() {
+		base.Terminate();
+//		StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
+	}
+
+	IEnumerator WaitForTrailFade(float secs) {
+		EffectControl.Spawn<EffectControl>(t.position, t.localRotation);
 		r.isKinematic = true;
 		r.velocity = Vector2.zero;
-		StartCoroutine(WaitForTrailFade(particles.startLifetime * 1.1f));
+		yield return new WaitForSeconds(secs);
+		particles.enableEmission = false;
+		Reclaim();
 	}
 
-	IEnumerator WaitForTrailFade(float t) {
-		yield return new WaitForSeconds(t);
-		particles.enableEmission = !particles.enableEmission;
-		if (particles.enableEmission == false) {base.TerminateBody();}
+	IEnumerator WaitForTrailLead(float secs) {
+		r.isKinematic = false;
+		yield return new WaitForSeconds(secs);
+		particles.enableEmission = true;
 	}
 
 	public override Bounds GetBounds ()
