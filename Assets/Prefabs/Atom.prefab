@@ -10,8 +10,11 @@ GameObject:
   - 4: {fileID: 400000}
   - 58: {fileID: 5800000}
   - 50: {fileID: 5000000}
-  - 114: {fileID: 11400000}
   - 212: {fileID: 21200000}
+  - 114: {fileID: 11400006}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
+  - 114: {fileID: 11400000}
   m_Layer: 9
   m_Name: Atom
   m_TagString: Untagged
@@ -64,18 +67,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82b5a56fa0e19db4b8adf963d1a6ca68, type: 3}
+  m_Script: {fileID: 11500000, guid: 38ffc8507743bb44dbb7dc8e72e944cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardness: 20
-  hardnessDamageThreshold: 5
-  hardnessMax: 100
-  hardnessGrowthRate: .200000003
-  effectiveMass: 0
-  r: {fileID: 0}
   t: {fileID: 0}
-  n: {fileID: 0}
   g: {fileID: 0}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e720fd17f50df84d8eb492f6deb9819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754a14a04d719d443a86c8f874ea4dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 10
+  hardnessDamageThreshold: 5
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b7ce6472c301d4daf6b8f171480a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectiveMass: 0
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

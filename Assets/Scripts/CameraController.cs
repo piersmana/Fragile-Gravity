@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void Start() {
-		viewportTarget = player.GetBounds();
+		viewportTarget = new Bounds(Vector3.zero, new Vector3(10,10,10));
 	}
 	
 	void LateUpdate () {

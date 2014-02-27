@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 199: {fileID: 19900000}
   - 198: {fileID: 19800000}
+  - 114: {fileID: 11400002}
   m_Layer: 9
   m_Name: Meteor
   m_TagString: Untagged
@@ -68,14 +69,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc73af4310cfbe409bfb34c72fe2ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardness: .100000001
-  hardnessDamageThreshold: 0
-  hardnessMax: 1
-  hardnessGrowthRate: 0
   effectiveMass: 0
-  r: {fileID: 0}
   t: {fileID: 0}
-  n: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ffc8507743bb44dbb7dc8e72e944cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  t: {fileID: 0}
   g: {fileID: 0}
 --- !u!198 &19800000
 ParticleSystem:
@@ -326,7 +335,7 @@ ParticleSystem:
       minMaxState: 0
     gravityModifier: 0
     inheritVelocity: 0
-    maxNumParticles: 5000
+    maxNumParticles: 1000
   ShapeModule:
     serializedVersion: 2
     enabled: 0
@@ -344,7 +353,7 @@ ParticleSystem:
     enabled: 1
     m_Type: 1
     rate:
-      scalar: 20
+      scalar: 12
       maxCurve:
         serializedVersion: 2
         m_Curve:

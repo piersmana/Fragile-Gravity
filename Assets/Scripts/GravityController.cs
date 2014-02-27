@@ -1,56 +1,78 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class GravityController : GravityCenter {
-	
+[RequireComponent (typeof(GravitySource))]
+public class GravityController : MonoBehaviour {
+		
 	public float massMaxMultiplier = 10f;
-
-	private float massMax;
-	private float massMin;
+		
+	public float massChangeRate = 10f;
+	
+	public float dragThreshold = 5f;
+	public float dragSensitivity = 2f;
 
 	private GravityController_ParticleControl particles;
 
-	private CameraController cameraControl;
+	[HideInInspector]
+	public Transform t;
+	[HideInInspector]
+	public GameObject g;
+	[HideInInspector]
+	public Rigidbody2D r;
+		
+	private GravitySource grav;
 
-	protected override void Awake () {
-		base.Awake ();
-		massMax = r.mass *  massMaxMultiplier;
-		massMin = r.mass * -massMaxMultiplier;
+	void Awake() {
+		t = transform;
+		g = gameObject;
+		r = rigidbody2D;
+
+		grav = GetComponent<GravitySource>();
+
 		particles = GetComponent<GravityController_ParticleControl>();
-				
-		cameraControl = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
 	}
 
 	void Start() {
-		particles.UpdateParticleSystemRate(gravityForce/massMax);
+		particles.UpdateParticleSystemRate(grav.gravityForce/(r.mass *  massMaxMultiplier));
+		StartCoroutine(CheckStartDrag());
 	}
 
-	protected void Update() {
-		Body[] activeBodies = Body.GetActiveBodies();
+	void AlterForce (float f) {
+		float massMax = r.mass *  massMaxMultiplier;
+		grav.gravityForce = Mathf.Clamp(r.mass * -massMax, r.mass *  massMax, grav.gravityForce + f);
+		particles.UpdateParticleSystemRate(grav.gravityForce/massMax);
+	}
 
-		Bounds bB = bounds;
-		bB.extents += bB.center;
-		bB.center = t.position;
-
-		for (int i = activeBodies.Length - 1; i >= 0; i--) {
-			//if (activeBodies[i].bodyType != GameManager.BodyTypes.Meteor)
-				bB.Encapsulate(activeBodies[i].GetBounds());
-				//TODO: Remove, instead use camera watch list
+	//Input
+	
+	IEnumerator CheckStartDrag() {
+		while (true) {
+			if (Input.GetMouseButton(0)) {
+				yield return StartCoroutine(DragAdjustGravity());
+			}
+			yield return null;
 		}
-
-		cameraControl.UpdateViewport(bB);
 	}
-
-	public void AlterForce (float g) {
-		//gravityForce = Mathf.Clamp(gravityForce + (g * massChangeRate * Time.deltaTime),massMin,massMax);
-		gravityForce = Mathf.Clamp(g,massMin,massMax); //TODO: make this a % change
-		particles.UpdateParticleSystemRate(gravityForce/massMax);
-	}
+	
+	IEnumerator DragAdjustGravity() {
+		Vector3 gravityScreenCenter = Camera.main.WorldToScreenPoint(t.position);
+		float startDistance = Vector3.Distance(gravityScreenCenter, Input.mousePosition);
 		
-	protected override void AddMass (float m)
-	{
-		base.AddMass(m);
-		massMax += m;
-		massMin -= m;
+		while (Input.GetMouseButton(0)) {
+			float delta = Vector3.Distance(gravityScreenCenter,Input.mousePosition) - startDistance;
+			if (Mathf.Abs(delta) >= dragThreshold) {
+				break;
+			}
+			yield return null;
+		}
+		
+		while (Input.GetMouseButton(0)) {
+			float delta = Vector3.Distance(gravityScreenCenter,Input.mousePosition) - startDistance;
+			//print (delta);
+			//Tweak gravity manipulation to have sensitivity based on setting + screen size
+			AlterForce(delta * dragSensitivity);
+			yield return null;
+		}
+		
+		yield return null;
 	}
 }

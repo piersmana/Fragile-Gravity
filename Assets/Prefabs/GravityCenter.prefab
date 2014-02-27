@@ -64,21 +64,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd443ad137a853042bf0bf3bfba3d331, type: 3}
+  m_Script: {fileID: 11500000, guid: 097d9016a3a61ba419b07dbacfe9538c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardness: 100
-  hardnessDamageThreshold: 5
-  hardnessMax: 100
-  hardnessGrowthRate: .200000003
   effectiveMass: 0
-  r: {fileID: 0}
   t: {fileID: 0}
-  n: {fileID: 0}
   g: {fileID: 0}
-  gravityForce: 0
-  gravityDetectionRangeMultiplier: 15
-  gravityDetectionRange: 150
+  r: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

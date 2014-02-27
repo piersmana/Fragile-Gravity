@@ -12,8 +12,11 @@ GameObject:
   - 50: {fileID: 5000000}
   - 114: {fileID: 11400000}
   - 212: {fileID: 21200000}
-  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400008}
+  - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400010}
+  - 114: {fileID: 11400002}
   m_Layer: 8
   m_Name: PlayerGravityCenter
   m_TagString: Player
@@ -125,7 +128,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
@@ -208,19 +211,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57a0cad9b161844caf657d3e72937d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hardness: 100
-  hardnessDamageThreshold: 5
-  hardnessMax: 100
-  hardnessGrowthRate: .200000003
-  effectiveMass: 0
-  r: {fileID: 0}
-  t: {fileID: 0}
-  n: {fileID: 0}
-  g: {fileID: 0}
-  gravityForce: 0
-  gravityDetectionRangeMultiplier: 5
-  gravityDetectionRange: 20
   massMaxMultiplier: 10
+  massChangeRate: 10
+  dragThreshold: 5
+  dragSensitivity: 2
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,12 +226,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f095720d0e371e54b92de9f5aacbd5fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 754a14a04d719d443a86c8f874ea4dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  massChangeRate: 10
-  dragThreshold: 5
-  dragSensitivity: 2
+  hardness: 100
+  hardnessDamageThreshold: 2
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -247,6 +243,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   growthSpeed: 5
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6503fa64eeb96504a9d613f7b5eb38e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityForce: 0
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097d9016a3a61ba419b07dbacfe9538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectiveMass: 0
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fccf14ae71ad95242b575d2578f9f0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &19800002
 ParticleSystem:
   m_ObjectHideFlags: 1

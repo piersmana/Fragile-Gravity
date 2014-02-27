@@ -101,12 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef402db4ffccb8e45b30c04ccf040aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atomPrefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
-  meteorPrefab: {fileID: 100000, guid: 3b9c810cda4e8784e82f2a2e32a4eb28, type: 2}
-  explosionPrefab: {fileID: 100000, guid: 3030f3e89e8a7e74bbeecd9a27d2f15d, type: 2}
-  maxAtoms: 250
-  maxMeteors: 50
-  maxExplosions: 50
+  initializationArray:
+  - type: 0
+    prefab: {fileID: 100000, guid: 3b9c810cda4e8784e82f2a2e32a4eb28, type: 2}
+    maxObjects: 100
+  - type: 1
+    prefab: {fileID: 100000, guid: 60fb2366bd30e0c45be5dccd96b490ed, type: 2}
+    maxObjects: 200
   TEMPspawnsPerFrame: 5
   TEMPspawnsPerLevel: 10
 --- !u!4 &144718956
@@ -1483,8 +1484,11 @@ GameObject:
   - 50: {fileID: 2088795045}
   - 114: {fileID: 2088795046}
   - 212: {fileID: 2088795042}
-  - 114: {fileID: 2088795047}
+  - 114: {fileID: 2088795049}
+  - 114: {fileID: 2088795050}
   - 114: {fileID: 2088795048}
+  - 114: {fileID: 2088795047}
+  - 114: {fileID: 2088795051}
   m_Layer: 8
   m_Name: PlayerGravityCenter
   m_TagString: Player
@@ -1549,7 +1553,7 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 1922346799}
   m_GameObject: {fileID: 2088795041}
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
@@ -1570,34 +1574,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57a0cad9b161844caf657d3e72937d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  r: {fileID: 0}
-  t: {fileID: 0}
-  n: {fileID: 0}
-  g: {fileID: 0}
-  hardness: 100
-  hardnessDamageThreshold: 5
-  hardnessMax: 100
-  hardnessGrowthRate: .200000003
-  effectiveMass: 0
-  gravityForce: 0
-  gravityDetectionRangeMultiplier: 5
-  gravityDetectionRange: 20
   massMaxMultiplier: 50
+  massChangeRate: 10
+  dragThreshold: 5
+  dragSensitivity: 2
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
 --- !u!114 &2088795047
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e,
+  m_PrefabParentObject: {fileID: 11400010, guid: d9c3071f785b6da4bb0e83fbd9e3f15e,
     type: 2}
   m_PrefabInternal: {fileID: 1922346799}
   m_GameObject: {fileID: 2088795041}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f095720d0e371e54b92de9f5aacbd5fc, type: 3}
+  m_Script: {fileID: 11500000, guid: fccf14ae71ad95242b575d2578f9f0bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  massChangeRate: 10
-  dragThreshold: 5
-  dragSensitivity: 2
 --- !u!114 &2088795048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1611,6 +1606,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   growthSpeed: 5
+--- !u!114 &2088795049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400008, guid: d9c3071f785b6da4bb0e83fbd9e3f15e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1922346799}
+  m_GameObject: {fileID: 2088795041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097d9016a3a61ba419b07dbacfe9538c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectiveMass: 0
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &2088795050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: d9c3071f785b6da4bb0e83fbd9e3f15e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1922346799}
+  m_GameObject: {fileID: 2088795041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6503fa64eeb96504a9d613f7b5eb38e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityForce: 0
+  t: {fileID: 0}
+  g: {fileID: 0}
+  r: {fileID: 0}
+--- !u!114 &2088795051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: d9c3071f785b6da4bb0e83fbd9e3f15e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1922346799}
+  m_GameObject: {fileID: 2088795041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754a14a04d719d443a86c8f874ea4dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 100
+  hardnessDamageThreshold: 2
 --- !u!1 &2145444720
 GameObject:
   m_ObjectHideFlags: 0

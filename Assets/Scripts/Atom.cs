@@ -1,57 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+[RequireComponent (typeof(PooledObject))]
+[RequireComponent (typeof(Hardness))]
+[RequireComponent (typeof(Attachable))]
 public class Atom : Body {
 
-	private GravityCenter parentBody;
-
-	protected override void Awake () {
+	private PooledObject pooled;
+	private Hardness hardness;
+	private Attachable attachable;
+	
+	protected override void Awake() {
 		base.Awake();
-		//r.AddForce(new Vector2(Random.Range(-100,100),Random.Range (-100,100))); //TEST: Add some initial chaos
+
+		pooled = GetComponent<PooledObject>();
+		hardness = GetComponent<Hardness>();
+		attachable = GetComponent<Attachable>();
 	}
 	
-	public void AttachToBody(GravityCenter g) {
-
-		r.isKinematic = true;
-		t.parent = g.transform;
-		gameObject.layer = LayerMask.NameToLayer("OwnedBodies");
-		parentBody = g;
-		parentBody.AddChildBody(this);
-		effectiveMass = parentBody.effectiveMass;
-
-		//TODO: Effects
-		//TODO: Start hardening subroutine
-
+	void OnCollisionEnter2D (Collision2D coll) {
+		//print ("Impact=" + (Mathf.Abs(Vector2.Dot (coll.contacts[0].normal,coll.relativeVelocity) * coll.rigidbody.mass)).ToString());
+		if (coll.contacts.Length > 0) { //BUG: third collision with no contacts being generated!
+			hardness.DamageOnCollision(coll);
+			if (hardness.hardness <= 0)
+				Terminate();
+		}
 	}
 	
-	protected override void OnCollisionEnter2D (Collision2D coll) {
-		base.OnCollisionEnter2D(coll);
-	}
-
 	void OnCollisionStay2D (Collision2D coll) {
-		GravityCenter g = coll.transform.root.GetComponent<GravityCenter>();
+		GravityCore g = coll.transform.root.GetComponent<GravityCore>();
 		if (g != null) {
-			AttachToBody (g);
+			attachable.AttachToCore(g);
 		}
 	}
-
-	protected override void Terminate() {
-		//Instantiate(explosionPrefab,t.position,t.localRotation);
-		PooledObject.Spawn<EffectControl>(t.position);
-		if (parentBody) {
-			r.isKinematic = false;
-			parentBody.RemoveChildBody(this);
-			t.parent = null;
-			parentBody = null;
-			effectiveMass = r.mass;
-			gameObject.layer = LayerMask.NameToLayer("FreeBodies");
-		}
-		base.Terminate();
+	
+	public override void Initialize(Vector3 pos, Quaternion rot, Vector2 velocity) {
+		t.position = pos;
+		t.localRotation = rot;
+		r.velocity = velocity;
 	}
-
-	public override Bounds GetBounds ()
-	{
-		bounds = renderer.bounds;
-		return base.GetBounds();
+	
+	void Terminate() {
+		hardness.Reset();
+		attachable.Reset();
+		pooled.Reclaim();
 	}
 }
